@@ -1,0 +1,38 @@
+2026-04-21 22:08:55 | DEBUG    | client | GET https://testnet.binancefuture.com/fapi/v2/account | params: {'timestamp': 1776789535756, 'signature': '8ff40f2b63cf9086e6bdcf5e3e3810aedbcb44e6217b7411a4af74a730e7006b'}
+2026-04-21 22:10:16 | DEBUG    | validators | Symbol validated: BTCUSDT
+2026-04-21 22:10:16 | DEBUG    | validators | Side validated: BUY
+2026-04-21 22:10:16 | DEBUG    | validators | Order type validated: MARKET
+2026-04-21 22:10:16 | DEBUG    | validators | Quantity validated: 0.001
+2026-04-21 22:10:26 | INFO     | orders | Placing MARKET BUY order | Symbol: BTCUSDT | Qty: 0.001
+2026-04-21 22:10:26 | DEBUG    | client | POST https://testnet.binancefuture.com/fapi/v1/order | params: {'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'MARKET', 'quantity': 0.001, 'timestamp': 1776789626679}
+2026-04-21 22:10:27 | DEBUG    | client | Response: {'orderId': 13058292407, 'symbol': 'BTCUSDT', 'status': 'NEW', 'clientOrderId': 'U0tskjj5zAP3En0bwwe3lS', 'price': '0.00', 'avgPrice': '0.00', 'origQty': '0.0010', 'executedQty': '0.0000', 'cumQty': '0.0000', 'cumQuote': '0.000000', 'timeInForce': 'GTC', 'type': 'MARKET', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.00', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'MARKET', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1776789628745}
+2026-04-21 22:10:27 | INFO     | orders | Order SUCCESS | OrderId: 13058292407 | Status: NEW | ExecutedQty: 0.0000 | AvgPrice: 0.00
+2026-04-21 22:10:27 | INFO     | cli | Order completed successfully
+2026-04-21 22:18:08 | DEBUG    | validators | Symbol validated: BTCUSDT
+2026-04-21 22:18:08 | DEBUG    | validators | Side validated: BUY
+2026-04-21 22:18:08 | DEBUG    | validators | Order type validated: LIMIT
+2026-04-21 22:18:08 | DEBUG    | validators | Quantity validated: 0.001
+2026-04-21 22:18:08 | DEBUG    | validators | Price validated: 75000.0
+2026-04-21 22:18:11 | INFO     | orders | Placing LIMIT BUY order | Symbol: BTCUSDT | Qty: 0.001 | Price: 75000.0
+2026-04-21 22:18:11 | DEBUG    | client | POST https://testnet.binancefuture.com/fapi/v1/order | params: {'symbol': 'BTCUSDT', 'side': 'BUY', 'type': 'LIMIT', 'quantity': 0.001, 'price': 75000.0, 'timeInForce': 'GTC', 'timestamp': 1776790091438}
+2026-04-21 22:18:12 | DEBUG    | client | Response: {'orderId': 13058313417, 'symbol': 'BTCUSDT', 'status': 'NEW', 'clientOrderId': 'JoddR3YhtwrXejRmY4Gk24', 'price': '75000.00', 'avgPrice': '0.00', 'origQty': '0.0010', 'executedQty': '0.0000', 'cumQty': '0.0000', 'cumQuote': '0.000000', 'timeInForce': 'GTC', 'type': 'LIMIT', 'reduceOnly': False, 'closePosition': False, 'side': 'BUY', 'positionSide': 'BOTH', 'stopPrice': '0.00', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'LIMIT', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1776790093298}
+2026-04-21 22:18:12 | INFO     | orders | Order SUCCESS | OrderId: 13058313417 | Status: NEW | ExecutedQty: 0.0000 | AvgPrice: 0.00
+2026-04-21 22:18:12 | INFO     | cli | Order completed successfully
+2026-04-21 22:19:03 | DEBUG    | validators | Symbol validated: BTCUSDT
+2026-04-21 22:19:03 | DEBUG    | validators | Side validated: SELL
+2026-04-21 22:19:03 | DEBUG    | validators | Order type validated: STOP_MARKET
+2026-04-21 22:19:03 | DEBUG    | validators | Quantity validated: 0.001
+2026-04-21 22:19:08 | INFO     | orders | Placing STOP_MARKET SELL order | Symbol: BTCUSDT | Qty: 0.001 | StopPrice: 74000.0
+2026-04-21 22:19:08 | DEBUG    | client | POST https://testnet.binancefuture.com/fapi/v1/order | params: {'symbol': 'BTCUSDT', 'side': 'SELL', 'type': 'STOP_MARKET', 'quantity': 0.001, 'stopPrice': 74000.0, 'timestamp': 1776790148008}
+2026-04-21 22:19:09 | ERROR    | client | API Error 400: {'code': -4120, 'msg': 'Order type not supported for this endpoint. Please use the Algo Order API endpoints instead.'}
+2026-04-21 22:19:09 | ERROR    | orders | Order FAILED | Code: -4120 | Msg: Order type not supported for this endpoint. Please use the Algo Order API endpoints instead.
+2026-04-21 22:19:09 | ERROR    | cli | Order failed: {'code': -4120, 'msg': 'Order type not supported for this endpoint. Please use the Algo Order API endpoints instead.'}
+2026-04-21 22:20:25 | DEBUG    | validators | Symbol validated: BTCUSDT
+2026-04-21 22:20:25 | DEBUG    | validators | Side validated: SELL
+2026-04-21 22:20:25 | DEBUG    | validators | Order type validated: MARKET
+2026-04-21 22:20:25 | DEBUG    | validators | Quantity validated: 0.001
+2026-04-21 22:20:28 | INFO     | orders | Placing MARKET SELL order | Symbol: BTCUSDT | Qty: 0.001
+2026-04-21 22:20:28 | DEBUG    | client | POST https://testnet.binancefuture.com/fapi/v1/order | params: {'symbol': 'BTCUSDT', 'side': 'SELL', 'type': 'MARKET', 'quantity': 0.001, 'timestamp': 1776790228901}
+2026-04-21 22:20:29 | DEBUG    | client | Response: {'orderId': 13058319724, 'symbol': 'BTCUSDT', 'status': 'NEW', 'clientOrderId': 'jbieGhl5E5srzhdv0BNWpS', 'price': '0.00', 'avgPrice': '0.00', 'origQty': '0.0010', 'executedQty': '0.0000', 'cumQty': '0.0000', 'cumQuote': '0.000000', 'timeInForce': 'GTC', 'type': 'MARKET', 'reduceOnly': False, 'closePosition': False, 'side': 'SELL', 'positionSide': 'BOTH', 'stopPrice': '0.00', 'workingType': 'CONTRACT_PRICE', 'priceProtect': False, 'origType': 'MARKET', 'priceMatch': 'NONE', 'selfTradePreventionMode': 'EXPIRE_MAKER', 'goodTillDate': 0, 'updateTime': 1776790230666}
+2026-04-21 22:20:29 | INFO     | orders | Order SUCCESS | OrderId: 13058319724 | Status: NEW | ExecutedQty: 0.0000 | AvgPrice: 0.00
+2026-04-21 22:20:29 | INFO     | cli | Order completed successfully
