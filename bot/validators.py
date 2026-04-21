@@ -3,11 +3,10 @@ from bot.logging_config import setup_logger
 logger = setup_logger("validators")
 
 VALID_SIDES = ["BUY", "SELL"]
-VALID_ORDER_TYPES = ["MARKET", "LIMIT", "STOP_MARKET"]
+VALID_ORDER_TYPES = ["MARKET", "LIMIT"]
 
 
 def validate_symbol(symbol: str) -> str:
-    """Validate and format trading symbol."""
     if not symbol:
         raise ValueError("Symbol cannot be empty")
     symbol = symbol.upper().strip()
@@ -18,7 +17,6 @@ def validate_symbol(symbol: str) -> str:
 
 
 def validate_side(side: str) -> str:
-    """Validate order side."""
     side = side.upper().strip()
     if side not in VALID_SIDES:
         raise ValueError(f"Invalid side: '{side}'. Must be one of: {VALID_SIDES}")
@@ -27,7 +25,6 @@ def validate_side(side: str) -> str:
 
 
 def validate_order_type(order_type: str) -> str:
-    """Validate order type."""
     order_type = order_type.upper().strip()
     if order_type not in VALID_ORDER_TYPES:
         raise ValueError(f"Invalid order type: '{order_type}'. Must be one of: {VALID_ORDER_TYPES}")
@@ -36,7 +33,6 @@ def validate_order_type(order_type: str) -> str:
 
 
 def validate_quantity(quantity: float) -> float:
-    """Validate order quantity."""
     if quantity <= 0:
         raise ValueError(f"Quantity must be greater than 0. Got: {quantity}")
     logger.debug(f"Quantity validated: {quantity}")
@@ -44,16 +40,14 @@ def validate_quantity(quantity: float) -> float:
 
 
 def validate_price(price: float, order_type: str) -> float:
-    """Validate price for LIMIT and STOP_MARKET orders."""
-    if order_type in ["LIMIT", "STOP_MARKET"]:
+    if order_type == "LIMIT":
         if price is None or price <= 0:
-            raise ValueError(f"Price must be greater than 0 for {order_type} orders. Got: {price}")
+            raise ValueError(f"Price must be greater than 0 for LIMIT orders. Got: {price}")
         logger.debug(f"Price validated: {price}")
     return price
 
 
-def validate_all(symbol: str, side: str, order_type: str, quantity: float, price: float = None) -> dict:
-    """Run all validations and return clean params."""
+def validate_all(symbol, side, order_type, quantity, price=None):
     return {
         "symbol": validate_symbol(symbol),
         "side": validate_side(side),

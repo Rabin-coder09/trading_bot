@@ -151,6 +151,68 @@ def balance():
     else:
         console.print(f"[red]Failed to fetch balance: {result['error']}[/red]")
 
+@app.command()
+def twap(
+    symbol: str = typer.Option(..., "--symbol", "-s", help="Trading pair e.g. BTCUSDT"),
+    side: str = typer.Option(..., "--side", help="BUY or SELL"),
+    total_qty: float = typer.Option(..., "--qty", "-q", help="Total quantity to split"),
+    slices: int = typer.Option(3, "--slices", help="Number of slices (default 3)"),
+    interval: int = typer.Option(5, "--interval", help="Seconds between slices (default 5)"),
+):
+    """BONUS: Place a TWAP order — splits total quantity into equal market orders over time."""
+    import time
+
+    console.print(Panel("[bold cyan]TWAP Order — Splitting into slices[/bold cyan]", expand=False))
+
+    slice_qty = round(total_qty / slices, 4)
+
+    table = Table(title="TWAP Plan", style="cyan")
+    table.add_column("Field", style="bold white")
+    table.add_column("Value", style="yellow")
+    table.add_row("Symbol", symbol)
+    table.add_row("Side", side.upper())
+    table.add_row("Total Quantity", str(total_qty))
+    table.add_row("Slices", str(slices))
+    table.add_row("Qty per Slice", str(slice_qty))
+    table.add_row("Interval", f"{interval} seconds")
+    console.print(table)
+
+    confirm = typer.confirm("Start TWAP execution?")
+    if not confirm:
+        console.print("[yellow]TWAP cancelled.[/yellow]")
+        raise typer.Exit(0)
+
+    client = get_client()
+
+    for i in range(1, slices + 1):
+        console.print(f"\n[cyan]Placing slice {i}/{slices} — Qty: {slice_qty}[/cyan]")
+        try:
+            validated = validate_all(symbol, side, "MARKET", slice_qty)
+        except ValueError as e:
+            console.print(f"[red]Validation Error: {e}[/red]")
+            raise typer.Exit(1)
+
+        result = place_order(
+            client=client,
+            symbol=validated["symbol"],
+            side=validated["side"],
+            order_type="MARKET",
+            quantity=validated["quantity"],
+        )
+
+        if result["success"]:
+            data = result["data"]
+            console.print(f"[green]✅ Slice {i} placed | OrderId: {data.get('orderId')} | Status: {data.get('status')}[/green]")
+            logger.info(f"TWAP slice {i}/{slices} placed | OrderId: {data.get('orderId')}")
+        else:
+            console.print(f"[red]❌ Slice {i} failed: {result['error'].get('msg')}[/red]")
+            logger.error(f"TWAP slice {i} failed: {result['error']}")
+
+        if i < slices:
+            console.print(f"[yellow]Waiting {interval} seconds...[/yellow]")
+            time.sleep(interval)
+
+    console.print(Panel("[bold green]✅ TWAP execution complete![/bold green]", expand=False))
 
 if __name__ == "__main__":
     app()

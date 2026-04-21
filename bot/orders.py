@@ -3,6 +3,9 @@ from bot.logging_config import setup_logger
 
 logger = setup_logger("orders")
 
+# Order types not supported on Binance Demo account
+DEMO_UNSUPPORTED_TYPES = ["STOP_MARKET"]
+
 
 def place_order(
     client: BinanceClient,
@@ -15,6 +18,24 @@ def place_order(
 ) -> dict:
     """Place an order on Binance Futures Testnet."""
 
+    # Warn user if order type has known demo limitations
+    if order_type in DEMO_UNSUPPORTED_TYPES:
+        logger.warning(
+            f"{order_type} is not supported on Binance Demo account. "
+            f"Use TAKE_PROFIT_MARKET as an alternative."
+        )
+        return {
+            "success": False,
+            "error": {
+                "code": -4120,
+                "msg": (
+                    f"{order_type} is not supported on Binance Demo account (demo.binance.com). "
+                    f"If using real Futures Testnet (testnet.binancefuture.com), it will work. "
+                    f"Try TAKE_PROFIT_MARKET instead."
+                )
+            }
+        }
+
     params = {
         "symbol": symbol,
         "side": side,
@@ -26,22 +47,17 @@ def place_order(
         params["price"] = price
         params["timeInForce"] = "GTC"
 
-    if order_type == "STOP_MARKET":
+    if order_type == "TAKE_PROFIT_MARKET":
         params["stopPrice"] = stop_price
         params["closePosition"] = "false"
 
-    logger.info(f"Placing {order_type} {side} order | Symbol: {symbol} | Qty: {quantity}" +
-                (f" | Price: {price}" if price else "") +
-                (f" | StopPrice: {stop_price}" if stop_price else ""))
+    logger.info(
+        f"Placing {order_type} {side} order | Symbol: {symbol} | Qty: {quantity}" +
+        (f" | Price: {price}" if price else "") +
+        (f" | StopPrice: {stop_price}" if stop_price else "")
+    )
 
-    # STOP_MARKET uses different endpoint
-    if order_type == "STOP_MARKET":
-        endpoint = "/fapi/v1/order"
-        params["type"] = "STOP_MARKET"
-    else:
-        endpoint = "/fapi/v1/order"
-
-    response = client.post(endpoint, params)
+    response = client.post("/fapi/v1/order", params)
 
     if response["status_code"] == 200:
         data = response["data"]
